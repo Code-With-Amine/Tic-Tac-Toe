@@ -21,7 +21,7 @@ function Game() {
     setIsGameOver(false);
   }
 
-  function RandMove(){
+  function RandMove() {
     const availableCells = []; // storing the empty cells
     for (let i = 0; i < playGround.length; i++) {
       for (let j = 0; j < playGround[i].length; j++) {
@@ -40,62 +40,136 @@ function Game() {
       setCurrPlayer("X");
       setPlayGround(copyPlayGround);
     }
-
   }
 
   function SmartMove() {
-    const defenseAttack = (player)=>{
-        for(let i = 0; i < copyPlayGround.length ; i++){ // check if two cells are full in rows ether stop the attack or make a wining move
-            if(copyPlayGround[i][0] === player && copyPlayGround[i][1] === player && copyPlayGround[i][2] === ''){
-                copyPlayGround[i][2] = 'O';
-                isMoved = true;
-                break;
-              }else if(copyPlayGround[i][0] === '' && copyPlayGround[i][1] === player && copyPlayGround[i][2] === player){
-                  copyPlayGround[i][0] = 'O';
-                  isMoved = true;
-                  break;
-              }else if(copyPlayGround[i][0] === player && copyPlayGround[i][1] === '' && copyPlayGround[i][2] === player){
-                  copyPlayGround[i][1] = 'O';
-                  isMoved = true;
-                  break;
-              }
+    const defenseAttack = (player) => {
+      for (let i = 0; i < copyPlayGround.length; i++) {
+        // check if two cells are full in rows ether stop the attack or make a wining move
+        if (
+          copyPlayGround[i][0] === player &&
+          copyPlayGround[i][1] === player &&
+          copyPlayGround[i][2] === ""
+        ) {
+          copyPlayGround[i][2] = "O";
+          isMoved = true;
+          return;
+        } else if (
+          copyPlayGround[i][0] === "" &&
+          copyPlayGround[i][1] === player &&
+          copyPlayGround[i][2] === player
+        ) {
+          copyPlayGround[i][0] = "O";
+          isMoved = true;
+          return;
+        } else if (
+          copyPlayGround[i][0] === player &&
+          copyPlayGround[i][1] === "" &&
+          copyPlayGround[i][2] === player
+        ) {
+          copyPlayGround[i][1] = "O";
+          isMoved = true;
+          return;
+        }
 
-              // check the columns
-              if(copyPlayGround[0][i] === player && copyPlayGround[1][i] === player && copyPlayGround[2][i] === ''){
-                copyPlayGround[2][i] = 'O';
-                isMoved = true;
-                break;
-              }else if(copyPlayGround[0][i] === '' && copyPlayGround[1][i] === player && copyPlayGround[2][i] === player){
-                  copyPlayGround[0][i] = 'O';
-                  isMoved = true;
-                  break;
-              }else if(copyPlayGround[0][i] === player && copyPlayGround[1][i] === '' && copyPlayGround[2][i] === player){
-                  copyPlayGround[1][i] = 'O';
-                  isMoved = true;
-                  break;
-              }
-            }
-            return;
-    }
+        // check the columns
+        if (
+          copyPlayGround[0][i] === player &&
+          copyPlayGround[1][i] === player &&
+          copyPlayGround[2][i] === ""
+        ) {
+          copyPlayGround[2][i] = "O";
+          isMoved = true;
+          return;
+        } else if (
+          copyPlayGround[0][i] === "" &&
+          copyPlayGround[1][i] === player &&
+          copyPlayGround[2][i] === player
+        ) {
+          copyPlayGround[0][i] = "O";
+          isMoved = true;
+          return;
+        } else if (
+          copyPlayGround[0][i] === player &&
+          copyPlayGround[1][i] === "" &&
+          copyPlayGround[2][i] === player
+        ) {
+          copyPlayGround[1][i] = "O";
+          isMoved = true;
+          return;
+        }
+      }
+        // diagonals
+        if (
+          playGround[0][0] === "" &&
+          playGround[1][1] === player &&
+          playGround[2][2] === player
+        ) {
+          copyPlayGround[0][0] = "O";
+          isMoved = true;
+          return;
+        } else if (
+          playGround[0][0] === player &&
+          playGround[1][1] === player &&
+          playGround[2][2] === ""
+        ) {
+          copyPlayGround[2][2] = "O";
+          isMoved = true;
+          return;
+        } else if (
+          playGround[0][0] === player &&
+          playGround[1][1] === "" &&
+          playGround[2][2] === player
+        ) {
+          copyPlayGround[1][1] = "O";
+          isMoved = true;
+          return;
+        }
+
+        if (
+          playGround[0][2] === "" &&
+          playGround[1][1] === player &&
+          playGround[2][0] === player
+        ) {
+          copyPlayGround[0][2] = "O";
+          isMoved = true;
+          return;
+        } else if (
+          playGround[0][2] === player &&
+          playGround[1][1] === "" &&
+          playGround[2][0] === player
+        ) {
+          copyPlayGround[1][1] = "O";
+          isMoved = true;
+          return;
+        } else if (
+          playGround[0][2] === player &&
+          playGround[1][1] === player &&
+          playGround[2][0] === ""
+        ) {
+          copyPlayGround[2][0] = "O";
+          isMoved = true;
+          return;
+        }
+    };
+
     const copyPlayGround = [...playGround];
     let isMoved = false;
-    defenseAttack('O');
-    !isMoved && defenseAttack('X'); // if there is no move call defenseAttack again
+    defenseAttack("O");
+    !isMoved && defenseAttack("X"); // if there is no move call defenseAttack again
 
     if (!isMoved) {
       RandMove();
     }
-  
-    setCurrPlayer('X');
+
+    setCurrPlayer("X");
     setPlayGround(copyPlayGround);
   }
-  
 
   function CpuPlay() {
     if (gameLevel == 1) {
       RandMove();
-    } 
-    else {
+    } else {
       SmartMove();
     }
   }
