@@ -42,39 +42,46 @@ function Game() {
     }
 
   }
+
   function SmartMove() {
+    const defenseAttack = (player)=>{
+        for(let i = 0; i < copyPlayGround.length ; i++){ // check if two cells are full in rows ether stop the attack or make a wining move
+            if(copyPlayGround[i][0] === player && copyPlayGround[i][1] === player && copyPlayGround[i][2] === ''){
+                copyPlayGround[i][2] = 'O';
+                isMoved = true;
+                break;
+              }else if(copyPlayGround[i][0] === '' && copyPlayGround[i][1] === player && copyPlayGround[i][2] === player){
+                  copyPlayGround[i][0] = 'O';
+                  isMoved = true;
+                  break;
+              }else if(copyPlayGround[i][0] === player && copyPlayGround[i][1] === '' && copyPlayGround[i][2] === player){
+                  copyPlayGround[i][1] = 'O';
+                  isMoved = true;
+                  break;
+              }
+
+              // check the columns
+              if(copyPlayGround[0][i] === player && copyPlayGround[1][i] === player && copyPlayGround[2][i] === ''){
+                copyPlayGround[2][i] = 'O';
+                isMoved = true;
+                break;
+              }else if(copyPlayGround[0][i] === '' && copyPlayGround[1][i] === player && copyPlayGround[2][i] === player){
+                  copyPlayGround[0][i] = 'O';
+                  isMoved = true;
+                  break;
+              }else if(copyPlayGround[0][i] === player && copyPlayGround[1][i] === '' && copyPlayGround[2][i] === player){
+                  copyPlayGround[1][i] = 'O';
+                  isMoved = true;
+                  break;
+              }
+            }
+            return;
+    }
     const copyPlayGround = [...playGround];
     let isMoved = false;
-  
-    for (let row = 0; row < copyPlayGround.length; row++) {
-      for (let col = 0; col < copyPlayGround.length; col++) {
-        if (copyPlayGround[row][col] === 'X' || copyPlayGround[row][col] === 'O') {
-          if (col + 1 < copyPlayGround[row].length && copyPlayGround[row][col + 1] === '') {
-            copyPlayGround[row][col + 1] = 'O';
-            isMoved = true;
-            break;
-          } else if (col - 1 >= 0 && copyPlayGround[row][col - 1] === '') {
-            copyPlayGround[row][col - 1] = 'O';
-            isMoved = true;
-            break;
-          } else if (row + 1 < copyPlayGround.length && copyPlayGround[row + 1][col] === '') {
-            copyPlayGround[row + 1][col] = 'O';
-            isMoved = true;
-            break;
-          } else if (row + 1 < copyPlayGround.length && col + 1 < copyPlayGround[row].length && copyPlayGround[row + 1][col + 1] === '') {
-            copyPlayGround[row + 1][col + 1] = 'O';
-            isMoved = true;
-            break;
-          } else if (row + 1 < copyPlayGround.length && col - 1 >= 0 && copyPlayGround[row + 1][col - 1] === '') {
-            copyPlayGround[row + 1][col - 1] = 'O';
-            isMoved = true;
-            break;
-          }
-        }
-      }
-      if (isMoved) break;
-    }
-  
+    defenseAttack('O');
+    !isMoved && defenseAttack('X'); // if there is no move call defenseAttack again
+
     if (!isMoved) {
       RandMove();
     }
